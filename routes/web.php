@@ -233,10 +233,11 @@ Route::get('/insert-data', function () {
 
 
 Route::get('/cache-clear', function () {
-
     Artisan::call('config:cache');
     Artisan::call('route:cache');
     Artisan::call('view:clear');
     Artisan::call('cache:clear');
+
     return "✅ All cache commands executed successfully!";
-});
+})->name('cacheclear');
+
