@@ -40,13 +40,13 @@
                                 </div>
 
                                 {{-- Filter + Reset --}}
-                                {{-- Filter + Reset --}}
                                 <div class="d-flex align-items-center gap-2 mt-3 mt-md-0">
                                     <form method="GET" class="d-flex align-items-center gap-2" id="filterForm">
                                         <label for="categorySelect" class="text_14 mb-0">Filter:</label>
+
                                         <select name="category" id="categorySelect" class="form-select form-select-sm"
-                                            style="min-width:220px">
-                                            <option value="">All Categories</option>
+                                            style="min-width:220px" onchange="this.form.submit()">
+                                            <option value="" @selected(!$selectedId)>All Categories</option>
                                             @foreach ($categories as $cat)
                                                 <option value="{{ $cat->id }}"
                                                     data-slug="{{ \Illuminate\Support\Str::slug($cat->name) }}"
@@ -60,12 +60,12 @@
                                         </select>
 
 
-
-                                        {{-- Reset --}}
-                                        <a id="resetBtn"
-                                            href="{{ route('category.show', [$category->id, $category->slug]) }}"
-                                            class="btn btn-outline-secondary btn-sm">Reset</a>
+                                        {{-- Reset button --}}
+                                        <a href="{{ $category ? route('category.show', [$category->id, Str::slug($category->name)]) : route('home') }}"
+                                            class="btn btn-primary btn-sm">Reset</a>
                                     </form>
+
+
                                 </div>
 
 
@@ -353,16 +353,8 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const catSelect = document.getElementById('categorySelect');
-
             catSelect?.addEventListener('change', () => {
-                const selectedOption = catSelect.options[catSelect.selectedIndex];
-                const selectedId = selectedOption.value;
-                const slug = selectedOption.dataset.slug; // ab yahan slug milega
-
-                if (slug) {
-                    window.location.href = `/uniform/${selectedId}/${slug}`;
-
-                }
+                catSelect.form.submit(); // bas form submit kar do
             });
         });
     </script>
